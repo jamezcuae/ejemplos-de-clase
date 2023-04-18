@@ -1,0 +1,37 @@
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+Nx = 401
+Ny = 301
+x = np.linspace(-20,20,Nx)
+y = np.linspace(-10,10,Ny)
+
+Nt = 101
+t = np.linspace(0,100,Nt)
+
+xx,yy = np.meshgrid(x,y) 
+
+T = np.empty((Ny,Nx,Nt)); T.fill(np.NaN)
+
+for j in range(Nt):
+ T[:,:,j] = np.cos((yy*xx**2-t[j])/10)*np.sin((t[j]+yy*xx)/12)
+del j
+
+mycmap = plt.get_cmap('twilight',101)
+
+fsize = 16
+plt.figure()
+for j in range(Nt):
+ im = plt.pcolormesh(xx,yy,T[:,:,j],cmap=mycmap,vmin=-1,vmax=1)
+ cbar = plt.colorbar(im)
+ plt.pause(0.001)
+ if j!=Nt-1:
+  plt.clf()
+ cbar.ax.tick_params(labelsize=fsize-3)
+ plt.title('Campo escalar t='+str(t[j]),fontsize=fsize)
+ plt.xlabel('dirección $x$',fontsize=fsize-2)
+ plt.ylabel('dirección $y$',fontsize=fsize-2)
+ plt.tick_params(labelsize=fsize-3)
+del j
+
